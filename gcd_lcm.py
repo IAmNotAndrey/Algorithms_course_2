@@ -36,6 +36,7 @@ def factorization(n):
 
     return factors
 
+
 def new_mas(mas1, mas2):
     mas3 = []
     dels = []
