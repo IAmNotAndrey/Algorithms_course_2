@@ -1,10 +1,10 @@
 # Для удобного вывода
 from pprint import pprint
 
-# Размеры инвестиций
+# # Размеры инвестиций
 # investments = [100, 200, 300, 400, 500]
 #
-# Матрица прибыли от проектов: строки = проекты
+# # Матрица прибыли от проектов: строки = проекты
 # start_project_matrix = [
 #     [15, 20, 26, 34, 40],
 #     [18, 22, 28, 33, 39],
@@ -49,7 +49,7 @@ def proportion_invest(project_matrix):
         # Прибыль и инвестиции берём из сочетаний проектов из A и B
         # Перебираем все сочетания
         for i in range(invest_count - 1):
-            for j in range(invest_count - 1):
+            for j in range(invest_count - 1 - i):
                 combinations.append((sum([investments[i], investments[j]]), sum([A[i], B[j]])))
 
         # Сортируем сочетания по необходимым инвестициям
@@ -70,7 +70,9 @@ def proportion_invest(project_matrix):
             # Для каждого размера инвестиций находим максимум
             j = 0
 
-            while combinations[j][0] <= money:
+            comb_count = len(combinations)
+
+            while j < comb_count and combinations[j][0] <= money:
                 current_number = combinations[j][1]
 
                 if current_number > max_number:
