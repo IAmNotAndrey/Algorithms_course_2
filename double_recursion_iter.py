@@ -1,7 +1,7 @@
 from statistics import mean
 import time
 import numpy as np
-import DoubleRecursion as dr
+import double_recursion_rec as dr
 
 
 def num_of_combs_via_td_matrix(n, k):
