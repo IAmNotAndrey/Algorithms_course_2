@@ -1,5 +1,6 @@
 # Для удобного вывода
 from pprint import pprint
+import random
 
 # # Размеры инвестиций
 # investments = [100, 200, 300, 400, 500]
@@ -16,12 +17,26 @@ from pprint import pprint
 investments = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200]
 
 # Матрица прибыли от проектов: строки = проекты
-start_project_matrix = [
-    [15, 20, 26, 34, 40, 45, 51, 56, 61, 67, 73, 77],
-    [18, 22, 28, 33, 39, 43, 52, 54, 62, 65, 74, 78],
-    [16, 23, 27, 29, 41, 44, 50, 53, 64, 67, 75, 79],
-    [17, 19, 25, 31, 37, 45, 49, 55, 62, 68, 74, 80]
-]
+# start_project_matrix = [
+#     [15, 20, 26, 34, 40, 45, 51, 56, 61, 67, 73, 77],
+#     [18, 22, 28, 33, 39, 43, 52, 54, 62, 65, 74, 78],
+#     [16, 23, 27, 29, 41, 44, 50, 53, 64, 67, 75, 79],
+#     [17, 19, 25, 31, 37, 45, 49, 55, 62, 68, 74, 80]
+# ]
+
+# Рандомайзер для заполнения матрицы прибыли от проектов
+start_project_matrix = []
+def random_profit():
+    for i in range(4):
+        current = 10
+        project = []
+        for j in range(len(investments)):
+            current += random.randint(1, 11)
+            project.append(current)
+        start_project_matrix.append(project)
+        project = []
+random_profit()
+
 
 # Количество вариантов инвестиций
 invest_count = len(investments)
