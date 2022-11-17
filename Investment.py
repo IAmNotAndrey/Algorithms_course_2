@@ -1,11 +1,12 @@
 # Для удобного вывода
 from pprint import pprint
 import random
+import time
 
-# # Размеры инвестиций
+# Размеры инвестиций
 # investments = [100, 200, 300, 400, 500]
 #
-# # Матрица прибыли от проектов: строки = проекты
+# Матрица прибыли от проектов: строки = проекты
 # start_project_matrix = [
 #     [15, 20, 26, 34, 40],
 #     [18, 22, 28, 33, 39],
@@ -16,6 +17,7 @@ import random
 # Размеры инвестиций
 investments = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200]
 
+
 # Матрица прибыли от проектов: строки = проекты
 # start_project_matrix = [
 #     [15, 20, 26, 34, 40, 45, 51, 56, 61, 67, 73, 77],
@@ -24,8 +26,8 @@ investments = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200]
 #     [17, 19, 25, 31, 37, 45, 49, 55, 62, 68, 74, 80]
 # ]
 
+
 # Рандомайзер для заполнения матрицы прибыли от проектов
-start_project_matrix = []
 def random_profit():
     for i in range(4):
         current = 10
@@ -35,14 +37,6 @@ def random_profit():
             project.append(current)
         start_project_matrix.append(project)
         project = []
-random_profit()
-
-
-# Количество вариантов инвестиций
-invest_count = len(investments)
-
-# Количество проектов
-project_count = len(start_project_matrix)
 
 
 def proportion_invest(project_matrix):
@@ -211,6 +205,39 @@ def check_all_combinations(project_matrix, investing_count, project_counts):
     return max_project_sums
 
 
-# Ищем прибыль сперва эффективным алгоритмом, затем полным перебором
-print(proportion_invest(start_project_matrix.copy()))
-print(check_all_combinations(start_project_matrix.copy(), invest_count, project_count))
+# Тестирование и сравнение эффективности
+if __name__ == '__main__':
+    success = 0
+
+    print('=' * 74)
+    print(' ' * 31 + 'Тестирование' + '\n')
+
+    test_num = int(input('Кол-во тестов: '))
+    for _ in range(test_num):
+
+        # Матрица прибыли от проектов
+        start_project_matrix = []
+        random_profit()
+
+        # Количество вариантов инвестиций
+        invest_count = len(investments)
+
+        # Количество проектов
+        project_count = len(start_project_matrix)
+
+        # Сравниваем два отсортированных списка, полученных двумя разными алгоритмами
+        if proportion_invest(start_project_matrix.copy()).sort() == check_all_combinations(start_project_matrix.copy(), invest_count, project_count).sort():
+            success += 1
+
+    print(f'Результат тестирования: {success / test_num * 100}%\n')
+
+    print('='*74)
+    print(' '*25 + 'Сравнение эффективности' + '\n')
+    # Ищем прибыль сперва эффективным алгоритмом, затем полным перебором
+    start = time.perf_counter_ns()
+    print(f'result dynamically = {proportion_invest(start_project_matrix.copy())}')
+    print(f'eff = {time.perf_counter_ns() - start}\n')
+
+    start = time.perf_counter_ns()
+    print(f'result enumeration = {check_all_combinations(start_project_matrix.copy(), invest_count, project_count)}')
+    print(f'eff = {time.perf_counter_ns() - start}')
