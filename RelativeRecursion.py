@@ -11,7 +11,7 @@ def ch_0(n, text=''):
 def ch_1(n, text=''):
     if n > 1:
         ch_0(n-1, text + '1')
-        ch_1(n - 1, text + '1')
+        ch_1(n-1, text + '1')
     else:
         strings.append(text+'1')
 
