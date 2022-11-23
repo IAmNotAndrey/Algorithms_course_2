@@ -30,7 +30,7 @@ def ways_in_triangle(matrix, n):
 		)
 		return is_valid
 
-	for way in product(points, repeat=n):
+	for way in product(points, repeat=n+1):
 		do_stop = False # Флаг остановки прохода по пути, если найдётся недопустимый промежуток
 		previous_point = ''
 		current_point = ''
@@ -64,8 +64,8 @@ if __name__ == '__main__':
 	# ]
 	matrix = [
 		[0, 0, 1],
-		[0, 1, 0],
-		[0, -1, 1],
+		[0, -1, 0],
+		[0, 1, 1],
 	]
 	n = 5
 	ways = ways_in_triangle(matrix, n)
