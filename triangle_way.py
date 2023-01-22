@@ -7,6 +7,8 @@ class TriangleWays():
 		self.steps = steps
 		self.start_point = start_point
 		self.is_AA = True if (matrix[0][3] in [1]) else False
+		self.is_BB = True if (matrix[1][3] in [1]) else False
+		self.is_CC = True if (matrix[2][3] in [1]) else False
 		self.is_AB = True if (matrix[0][0] in [1] and matrix[1][0] in [-1, 1]) else False
 		self.is_BA = True if (matrix[1][0] in [1] and matrix[0][0] in [-1, 1]) else False
 		self.is_BC = True if (matrix[1][1] in [1] and matrix[2][1] in [-1, 1]) else False
@@ -20,6 +22,8 @@ class TriangleWays():
 			# (segment[0] == segment[1]) # 'aa', 'bb' или 'cc'
 			((segment[0] == segment[1]) and (segment[0] not in ['a']) and (segment[1] not in ['a']))
 			or (segment[0] in ['a'] and segment[1] in ['a'] and not self.is_AA)
+			or (segment[0] in ['b'] and segment[1] in ['b'] and not self.is_BB)
+			or (segment[0] in ['c'] and segment[1] in ['c'] and not self.is_CC)
 			or (segment[0] in ['a'] and segment[1] in ['b'] and not self.is_AB) 
 			or (segment[0] in ['b'] and segment[1] in ['a'] and not self.is_BA) 
 			or (segment[0] in ['b'] and segment[1] in ['c'] and not self.is_BC) 
@@ -103,35 +107,34 @@ if __name__ == '__main__':
 	# A	
 	# B	
 	# C	
-	
-	# matrix = [
-	# 	[1, 0, 1, 0],
-	# 	[0, 1, 0, 0],
-	# 	[0, 1, 1, 0],
-	# ]
+
 	matrix = [
-		[0, 0, 1, 1],
-		[0, -1, 0, 0],
-		[0, 1, 1, 0],
+		[1, 0, 1, 1],
+		[-1, 1, 0, 1],
+		[0, 1, -1, 1],
 	]
-	n = 5
-	ways = ways_in_triangle(matrix, n)
-	end_A = 0
-	end_B = 0
-	end_C = 0
-	for way in ways:
-		match way[-1]:
-			case 'a':
-				end_A += 1
-			case 'b':
-				end_B += 1
-			case 'c':
-				end_C += 1
+	n = 2
+	# print('Перебор')
+	# ways = ways_in_triangle(matrix, n)
+	# end_A = 0
+	# end_B = 0
+	# end_C = 0
+	# for way in ways:
+	# 	match way[-1]:
+	# 		case 'a':
+	# 			end_A += 1
+	# 		case 'b':
+	# 			end_B += 1
+	# 		case 'c':
+	# 			end_C += 1
 	# pprint(ways)
 	# print(f'{end_A=}, {end_B=}, {end_C=}')
-	print(len(ways))
+	# print(len(ways))
 	
-	pprint(TriangleWays(n, matrix, start_point='a').find_all_ways())
-	pprint(TriangleWays(n, matrix, start_point='b').find_all_ways())
-	pprint(TriangleWays(n, matrix, start_point='c').find_all_ways())
-
+	print('Рекурсия')
+	ways = TriangleWays(n, matrix, start_point='a').find_all_ways()
+	# pprint(ways)
+	print([way for way in ways if way[-1] in ['c']])
+	print(len([way for way in ways if way[-1] in ['c']]))
+	# pprint(TriangleWays(n, matrix, start_point='b').find_all_ways())
+	# pprint(TriangleWays(n, matrix, start_point='c').find_all_ways())
