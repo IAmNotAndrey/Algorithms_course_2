@@ -25,26 +25,27 @@ def tape_strategy(works: list, worker_num: int):
 	if not all(x > 0 for x in works):
 		raise ValueError('works elements must be > 0')
 
+	# # Дополнительный элемент для нахождения оптимального времени
+	# extra_elem = None
+	# # Оптимальное время
+	# t_opt = None
+	
 	# Дополнительный элемент для нахождения оптимального времени
-	extra_elem = None
+	extra_elem = sum(works) / worker_num
 	# Оптимальное время
-	t_opt = None
+	t_opt = max([max(works), extra_elem])
 	
 	# Проверку на возможность сократить количество рабочих без увеличения оптимального времени
-	pre_t_opt = None
 	while True:
-		extra_elem = sum(works) / worker_num
-		t_opt = max([max(works), extra_elem])
-		# Хотя бы 1 раз выполняем цикл
-		if pre_t_opt == None:
-			worker_num -= 1
-			pre_t_opt = t_opt
-			continue
+		next_extra_elem = sum(works) / (worker_num-1)
+		next_t_opt = max([max(works), next_extra_elem])
 		# Если оптимальное время не меняется, то уменьшаем количество рабочих
-		if t_opt == pre_t_opt:
+		if t_opt >= next_t_opt:
 			worker_num -= 1
+			t_opt = next_t_opt
 		else:
 			break
+
 	# Подготовленная разрезанная лента
 	cut_tape = [[] for _ in range(worker_num)]
 
@@ -86,23 +87,23 @@ def tape_strategy(works: list, worker_num: int):
 
 
 if __name__ == '__main__':
-	# Тесты
-	test_num = int(input())
-	for i in range(test_num):
-		work_num = random.randint(2, 20)
-		works = []
-		for _ in range(work_num):
-			works.append(random.randint(2, 50)*random.random())
+	# # Тесты
+	# test_num = int(input())
+	# for i in range(test_num):
+	# 	work_num = random.randint(2, 20)
+	# 	works = []
+	# 	for _ in range(work_num):
+	# 		works.append(random.randint(2, 50)*random.random())
 
-		worker_num = random.randint(2, 10)
-		print(
-			i,
-			tape_strategy(works, int(worker_num))
-		)
-
-	# print(
-	# 	tape_strategy(
-	# 		[5,2,4,3,7,6], 10,
+	# 	worker_num = random.randint(2, 10)
+	# 	print(
+	# 		i,
+	# 		tape_strategy(works, int(worker_num))
 	# 	)
-	# )
-	
+
+	pprint(
+		tape_strategy(
+			[3,4,6,7,7,9,10,12,17], 5
+		),
+		depth=24
+	)
