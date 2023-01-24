@@ -1,6 +1,7 @@
 from pprint import pprint
 import random
 from math import inf
+from tabulate import tabulate
 
 
 def tape_strategy(works: list, worker_num: int):
@@ -20,7 +21,7 @@ def tape_strategy(works: list, worker_num: int):
 		raise ValueError('works length <= 0')
 	if not isinstance(works, list):
 		raise TypeError(f'works must be list, not {type(works)}')
-	if not all(isinstance(x, int | float) for x in works):
+	if not all(isinstance(x, (int, float)) for x in works):
 		raise TypeError('works elements must be int or float')
 	if not all(x > 0 for x in works):
 		raise ValueError('works elements must be > 0')
@@ -49,33 +50,41 @@ def tape_strategy(works: list, worker_num: int):
 	# Подготовленная разрезанная лента
 	cut_tape = [[] for _ in range(worker_num)]
 
+	global operation_count
+	operation_count = 0
+
+
 	def rec(work_index, passed_time, work_time, worker_index):
-		'''
+		"""
 		Рекурсивная функция для удобного заполнения ленты без потери нужной информации
-		
+
 		work_index : индекс работы
 		passed_time : отработанное текущим рабочим время
 		work_time : время, которое текущий рабочий собирается отработать
 		worker_index : индекс текущего рабочего
-		'''
+		"""
+
+		global operation_count
+		operation_count += 1
+
 		sum_time = passed_time + work_time
 		if sum_time > t_opt:
 			next_time = sum_time - t_opt
 			cur_time = work_time - next_time
 			
-			cut_tape[worker_index].append({work_index: cur_time})
+			cut_tape[worker_index].append({work_index: round(cur_time, 2)})
 			
 			rec(work_index, 0, next_time, worker_index+1)
 			
 		elif sum_time == t_opt:
-			cut_tape[worker_index].append({work_index: work_time})
+			cut_tape[worker_index].append({work_index: round(work_time, 2)})
 			try:
 				rec(work_index+1, 0, works[work_index+1], worker_index+1)
 			except IndexError:
 				return
 
 		else:
-			cut_tape[worker_index].append({work_index: work_time})
+			cut_tape[worker_index].append({work_index: round(work_time, 2)})
 			try:
 				rec(work_index+1, sum_time, works[work_index+1], worker_index)	
 			except IndexError:
@@ -83,27 +92,66 @@ def tape_strategy(works: list, worker_num: int):
 
 	rec(0, 0, works[0], 0)
 
-	return cut_tape
+	return cut_tape, t_opt, worker_num, operation_count
 
 
 if __name__ == '__main__':
-	# # Тесты
-	# test_num = int(input())
-	# for i in range(test_num):
-	# 	work_num = random.randint(2, 20)
-	# 	works = []
-	# 	for _ in range(work_num):
-	# 		works.append(random.randint(2, 50)*random.random())
+	test_number = 0
 
-	# 	worker_num = random.randint(2, 10)
-	# 	print(
-	# 		i,
-	# 		tape_strategy(works, int(worker_num))
-	# 	)
+	if test_number == 0:
+		# works = [5, 2, 4, 3, 7, 6]
+		# workers_number = 3
 
-	pprint(
-		tape_strategy(
-			[3,4,6,7,7,9,10,12,17], 5
-		),
-		depth=24
-	)
+		# works = [3,4,6,7,7,9,10,12,17]
+		# workers_number = 5
+
+		works = [5, 4, 4, 3, 7, 10]
+		workers_number = 3
+
+		result = tape_strategy(works, workers_number)
+
+		print('\nWorkers count:', result[2])
+		print('Min time:', result[1], '\n')
+
+		pprint(
+			result[0],
+			depth=24,
+			width=40
+		)
+
+		print('\nResult:')
+
+		result_matrix = []
+
+		for worker in result[0]:
+			result_matrix.append([])
+
+			for task in worker:
+
+				current_key = int(list(task.keys())[0])
+				current_value = int(list(task.values())[0])
+
+				for i in range(current_value):
+					result_matrix[-1].append(current_key + 1)
+
+		print(tabulate(result_matrix, headers=range(int(result[1])), tablefmt='orgtbl'))
+
+	else:
+		time_tasks = []
+
+		for task_count in range(5, 100):
+			tasks_length = []
+
+			for i in range(task_count):
+				tasks_length.append(10)
+
+			time_tasks.append(tape_strategy(tasks_length, 5)[3])
+
+		print(time_tasks)
+		print()
+		new_time_tasks = [*time_tasks[1:]]
+
+		for i in range(len(new_time_tasks)):
+			new_time_tasks[i] = new_time_tasks[i] - time_tasks[i]
+
+		print(new_time_tasks)
