@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c8f1343f-5fac-4fe1-baf9-b2b6dd3c45ad" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tape_strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/tape_strategy.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
