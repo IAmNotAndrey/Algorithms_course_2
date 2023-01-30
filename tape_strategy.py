@@ -11,10 +11,9 @@ def tape_strategy(works: list, worker_num: int):
 	if worker_num <= 0:
 		raise ValueError('worker_num <= 0')
 	elif worker_num > HIGHEST_WORKER_NUM:
-		raise ValueError('worker_num >= HIGHEST_WORKER_NUM')
-	# ! Выдаёт ошибку постоянно, мол число не int. Явное приведение к int при вводе параметров также не помогает
-	# if not isinstance(works, int):
-	# 	raise TypeError(f'worker_num must be int, not {type(worker_num)}')
+		raise ValueError('worker_num > HIGHEST_WORKER_NUM')
+	if not isinstance(worker_num, int):
+		raise TypeError(f'worker_num must be int, not {type(worker_num)}')
 
 	# Проверка корректности ввода параметра works
 	if len(works) == 0:
@@ -96,13 +95,17 @@ def tape_strategy(works: list, worker_num: int):
 
 
 if __name__ == '__main__':
-	test_number = 0
+	
+	test_number = 1
 
 	if test_number == 0:
 		# works = [5, 2, 4, 3, 7, 6]
 		# workers_number = 3
 
 		# works = [3,4,6,7,7,9,10,12,17]
+		# workers_number = 5
+
+		# works = [3.123124,4.56548,6.626058,7.65405664,7.568405,9.056,10.56,12,17.6512]
 		# workers_number = 5
 
 		works = [5, 4, 4, 3, 7, 10]
@@ -112,6 +115,7 @@ if __name__ == '__main__':
 
 		print('\nWorkers count:', result[2])
 		print('Min time:', result[1], '\n')
+		print('O(n):', result[3])
 
 		pprint(
 			result[0],
