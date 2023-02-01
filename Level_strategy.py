@@ -19,9 +19,14 @@ import copy
 # worker_count_lev = 3
 
 # Лексикографическая стратегия
-pred_task_table_lex = ['D', 'K', 'G', 'G', 'A', 'K', 'D', 'J', 'F', 'D', 'J', 'J', 'F', 'B']
-next_task_table_lex = ['C', 'C', 'H', 'E', 'E', 'E', 'G', 'G', 'G', 'A', 'A', 'K', 'K', 'K']
+pred_task_table_lex = ['D', 'K', 'G', 'G', 'A', 'K', 'D', 'J', 'F', 'D', 'J', 'J', 'F', 'B', 'F', 'D']
+next_task_table_lex = ['C', 'C', 'H', 'E', 'E', 'E', 'G', 'G', 'G', 'A', 'A', 'K', 'K', 'K', 'E', 'H']
 worker_count_lex = 2
+
+# # Лексикографическая стратегия (прошлая)
+# pred_task_table_lex = ['D', 'K', 'G', 'G', 'A', 'K', 'D', 'J', 'F', 'D', 'J', 'J', 'F', 'B']
+# next_task_table_lex = ['C', 'C', 'H', 'E', 'E', 'E', 'G', 'G', 'G', 'A', 'A', 'K', 'K', 'K']
+# worker_count_lex = 2
 
 # =======================================================================================
 # ================================ Доп функционал =======================================
@@ -164,6 +169,57 @@ def create_print_graphs(pred_task_table: list, next_task_table: list):
 # =======================================================================================
 # ============================== Основной функционал ====================================
 # =======================================================================================
+
+
+def find_transit_ways_rec(relations: dict, points: list, transit_ways: list, ways_list: list = []) -> list:
+
+    for point in points:
+        if point in relations.keys():
+            # Перебираем связанные вершины
+            for next_point in relations[point]:
+                if next_point in transit_ways:
+                    ways_list.append(next_point)
+
+                # Если вершина имеет потомков
+                if next_point in relations.keys():
+                    find_transit_ways_rec(relations, relations[point], transit_ways, ways_list)
+
+    return ways_list
+
+
+def find_transit_ways(pred_task_table: list, next_task_table: list) -> dict:
+    # Длинна таблицы
+    table_length = len(next_task_table)
+
+    # Связи между предками и потомками
+    relations = {}
+
+    # Корни дерева
+    roots = []
+
+    # Создаём словарь связей между pred и next
+    for i in range(table_length):
+        next = next_task_table[i]
+        pred = pred_task_table[i]
+
+        # Для каждого предка указываем потомков
+        if next not in relations.keys():
+            # Если список ещё не создан, создаём его
+            relations[next] = []
+
+        relations[next].append(pred)
+
+        # Ищем корни (вершины, не имеющие предков)
+        if next not in pred_task_table:
+            if next not in roots:
+                roots.append(next)
+
+    ways_list = {}
+
+    for point in relations.keys():
+        ways_list[point] = find_transit_ways_rec(relations, relations[point], relations[point], [])
+
+    return ways_list
 
 
 def remove_duplicate(first_list_link: list, second_list: list):
@@ -519,8 +575,10 @@ def lex_level_strategy(pred_task_table: list, next_task_table: list, worker_coun
 
 
 if __name__ == '__main__':
+    print(find_transit_ways(pred_task_table_lex, next_task_table_lex))
+
     # level_strategy(pred_task_table_lev, next_task_table_lev, worker_count_lev)
 
-    lex_level_strategy(pred_task_table_lex, next_task_table_lex, worker_count_lex)
+    #lex_level_strategy(pred_task_table_lex, next_task_table_lex, worker_count_lex)
 
     # create_print_graphs(pred_task_table_lev, next_task_table_lev)
