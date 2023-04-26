@@ -3,9 +3,9 @@ import json
 import copy
 
 # Граф - уровневая стратегия
-# pred_task_table_lev = ['A', 'B', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M']
-# next_task_table_lev = ['B', 'C', 'L', 'D', 'A', 'A', 'A', 'L', 'E', 'E', 'C', 'B']
-# worker_count_lev = 3
+pred_task_table_lev = ['A', 'B', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M']
+next_task_table_lev = ['B', 'C', 'L', 'D', 'A', 'A', 'A', 'L', 'E', 'E', 'C', 'B']
+worker_count_lev = 3
 
 # Граф - уровневая и лексикографическая стратегии
 # pred_task_table_lex = ['A', 'A', 'C', 'C', 'D', 'E', 'F', 'G', 'G', 'H', 'H', 'I', 'I', 'L']
@@ -18,10 +18,10 @@ import copy
 # next_task_table_lev = ['N', 'B', 'H', 'N', 'L', 'B', 'L', 'A', 'G', 'A', 'B', 'G', 'L']
 # worker_count_lev = 3
 
-# Лексикографическая стратегия
-pred_task_table_lex = ['D', 'K', 'G', 'G', 'A', 'K', 'D', 'J', 'F', 'D', 'J', 'J', 'F', 'B', 'F', 'D']
-next_task_table_lex = ['C', 'C', 'H', 'E', 'E', 'E', 'G', 'G', 'G', 'A', 'A', 'K', 'K', 'K', 'E', 'H']
-worker_count_lex = 2
+# # Лексикографическая стратегия
+# pred_task_table_lex = ['D', 'K', 'G', 'G', 'A', 'K', 'D', 'J', 'F', 'D', 'J', 'J', 'F', 'B', 'F', 'D']
+# next_task_table_lex = ['C', 'C', 'H', 'E', 'E', 'E', 'G', 'G', 'G', 'A', 'A', 'K', 'K', 'K', 'E', 'H']
+# worker_count_lex = 2
 
 # # Лексикографическая стратегия (прошлая)
 # pred_task_table_lex = ['D', 'K', 'G', 'G', 'A', 'K', 'D', 'J', 'F', 'D', 'J', 'J', 'F', 'B']
@@ -575,9 +575,9 @@ def lex_level_strategy(pred_task_table: list, next_task_table: list, worker_coun
 
 
 if __name__ == '__main__':
-    print(find_transit_ways(pred_task_table_lex, next_task_table_lex))
+    # print(find_transit_ways(pred_task_table_lex, next_task_table_lex))
 
-    # level_strategy(pred_task_table_lev, next_task_table_lev, worker_count_lev)
+    level_strategy(pred_task_table_lev, next_task_table_lev, worker_count_lev)
 
     #lex_level_strategy(pred_task_table_lex, next_task_table_lex, worker_count_lex)
 
