@@ -45,16 +45,15 @@ def get_new_d_t_matrixes(prev_d: list, prev_t: list, k: int = 0) -> tuple[list]:
 	
 	for i in range(n):
 		for j in range(n):
-			# NOTE: ставим k-1
 			# Расчёты для i,j-элемента матрицы `new_d`
 			new_d[i][j] = min(
-				[prev_d[i][j], prev_d[i][k-1] + prev_d[k-1][j]]
+				[prev_d[i][j], prev_d[i][k] + prev_d[k][j]]
 			)
 			# Расчёты для i,j-элемента матрицы `new_t`
 			if new_d[i][j] == prev_d[i][j]:
 				new_t[i][j] = prev_t[i][j]
 			else:
-				new_t[i][j] = prev_t[i][k-1]
+				new_t[i][j] = prev_t[i][k]
 
 	return get_new_d_t_matrixes(new_d, new_t, k+1)
 
@@ -102,4 +101,4 @@ if __name__	== '__main__':
 	new_t_for_way = [[value-1 for value in row] for row in new_t]
 
 	# Находим кратчайшее расстояние между 2 и 4
-	pprint(find_shortest_way_by_floyd(1, 3, new_t_for_way))
+	pprint(find_shortest_way_by_floyd(3, 1, new_t_for_way))
