@@ -59,6 +59,29 @@ def get_new_d_t_matrixes(prev_d: list, prev_t: list, k: int = 0) -> tuple[list]:
 	return get_new_d_t_matrixes(new_d, new_t, k+1)
 
 
+def find_shortest_way_by_floyd(
+		a: int,
+		b: int,
+		t: list) -> list:
+	'''Находит кратчайшее расстояние из точки `a` в точку `b`. Выводит путь в виде списка индексов. Отсчёт нумерации точек ведётся с 0 до n-1.'''
+
+	# NOTE: использование `a` и `b` в коде ведётся только с операцией декримента
+	
+	if a == b:
+		return [a]
+	elif a > b:
+		a, b = b, a
+
+	way = [a]
+	cur_pos = a
+	while cur_pos != b:
+		next_pos = t[cur_pos][b]
+		way.append(next_pos)
+		cur_pos = next_pos
+		
+	return way
+
+
 if __name__	== '__main__':
 	# Матрица длин дуг ориентированного n-вершинного графа
 	d = [
@@ -74,3 +97,9 @@ if __name__	== '__main__':
 	
 	pprint(f'd: {new_d}')
 	pprint(f't: {new_t}')
+
+	# Уменьшаем все значения `new_t` на -1
+	new_t_for_way = [[value-1 for value in row] for row in new_t]
+
+	# Находим кратчайшее расстояние между 2 и 4
+	pprint(find_shortest_way_by_floyd(1, 3, new_t_for_way))
